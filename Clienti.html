@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizzeria da Ploda - Menu Digitale</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin:0; font-family:'Roboto', sans-serif; background:#fff8f0; color:#333; display:flex; flex-direction:column; }
+.sidebar { position: fixed; top:0; left:0; width:180px; height:100%; background:#b71c1c; padding-top:10px; overflow-y:auto; box-shadow:2px 0 5px rgba(0,0,0,0.2); }
+.sidebar a { display:block; color:white; text-decoration:none; padding:6px 10px; margin:2px 0; border-radius:5px; font-size:0.85em; }
+.sidebar a:hover { background:#d32f2f; }
+.content { margin-left:180px; padding:5px; flex:1; }
+header { background:#d32f2f; color:white; padding:10px; text-align:center; border-radius:10px; }
+header h1 { margin:0; font-size:1.5em; }
+header p { margin:2px 0 0 0; font-size:0.85em; }
+.coperto { text-align:center; font-weight:bold; font-size:0.9em; margin-top:3px; }
+section { padding:10px 0; max-width:900px; margin:auto; }
+section h2 { text-align:center; margin-bottom:10px; font-size:1.3em; color:#d32f2f; }
+.menu-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:6px; }
+.menu-item { background:#fff3e0; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.1); padding:4px; font-size:0.85em; }
+.menu-item img { width:100%; height:120px; object-fit:cover; border-bottom:1px solid #ccc; }
+.menu-item h3 { margin:3px 8px; font-size:1em; }
+.menu-item p { margin:1px 8px 2px 8px; font-size:0.8em; }
+.formati { display:flex; flex-wrap:wrap; margin:3px 8px; gap:3px; }
+.formati div { cursor:pointer; padding:2px 3px; border-radius:4px; background:#ffe0b2; font-size:0.75em; text-align:center; flex:1 0 45%; transition: all 0.2s ease; }
+.formati div:hover { background:#ffcc80; transform: scale(1.05); }
+.formati div.selected { background:#ffd180; font-weight:bold; }
+.lattosio-note, .allergeni { font-size:0.75em; color:#d32f2f; margin:1px 8px; }
+.footer { background:#333; color:white; text-align:center; padding:10px; margin-top:10px; border-radius:10px; font-size:0.8em; }
+@media(max-width:768px){
+    .sidebar { width:50px; padding-top:5px; }
+    .sidebar a { font-size:0.7em; padding:5px 3px; margin:2px 0; }
+    .content { margin-left:50px; padding:3px; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <a href="#classiche">Classiche</a>
+    <a href="#formaggi">Formaggi</a>
+    <a href="#salumi">Salumi</a>
+    <a href="#verdure">Verdure</a>
+    <a href="#piccanti">Piccanti</a>
+    <a href="#pesce">Pesce</a>
+    <a href="#golose">Golose</a>
+    <a href="#taglieri">Taglieri</a>
+    <a href="#fritti">Fritti</a>
+    <a href="#bere">Bere</a>
+    <a href="#dessert">Dessert</a>
+</div>
+
+<div class="content">
+<header>
+    <h1>Pizzeria da Ploda - Menu Digitale</h1>
+    <p>Scorri le categorie per scoprire tutte le specialità</p>
+    <p class="coperto">Coperto: 1 € a persona</p>
+</header>
+
+<section id="classiche"><h2>Classiche</h2><div class="menu-grid" id="classiche-list"></div></section>
+<section id="formaggi"><h2>Formaggi</h2><div class="menu-grid" id="formaggi-list"></div></section>
+<section id="salumi"><h2>Salumi</h2><div class="menu-grid" id="salumi-list"></div></section>
+<section id="verdure"><h2>Verdure</h2><div class="menu-grid" id="verdure-list"></div></section>
+<section id="piccanti"><h2>Piccanti</h2><div class="menu-grid" id="piccanti-list"></div></section>
+<section id="pesce"><h2>Pesce</h2><div class="menu-grid" id="pesce-list"></div></section>
+<section id="golose"><h2>Golose</h2><div class="menu-grid" id="golose-list"></div></section>
+<section id="taglieri"><h2>Taglieri</h2><div class="menu-grid" id="taglieri-list"></div></section>
+<section id="fritti"><h2>Fritti</h2><div class="menu-grid" id="fritti-list"></div></section>
+<section id="bere"><h2>Bere</h2><div class="menu-grid" id="bere-list"></div></section>
+<section id="dessert"><h2>Dessert</h2><div class="menu-grid" id="dessert-list"></div></section>
+
+<div class="footer"><p>&copy; 2025 Pizzeria da Ploda</p></div>
+</div>
+
+<script>
+const menu = {
+    classiche:[
+        {nome:"Margherita", descrizione:"Pomodoro, mozzarella e basilico", prezzoNormale:7, prezzoFamiglia:12, allergeni:"Glutine, Lattosio"},
+        {nome:"Marinara", descrizione:"Pomodoro, aglio, origano", prezzoNormale:6.5, prezzoFamiglia:11, allergeni:"Glutine"}
+    ],
+    formaggi:[
+        {nome:"Quattro Formaggi", descrizione:"Mozzarella, gorgonzola, fontina, parmigiano", prezzoNormale:9, prezzoFamiglia:14, allergeni:"Glutine, Lattosio"}
+    ],
+    salumi:[
+        {nome:"Diavola", descrizione:"Pomodoro, mozzarella, salame piccante", prezzoNormale:8, prezzoFamiglia:13, allergeni:"Glutine, Lattosio"},
+        {nome:"Prosciutto e Funghi", descrizione:"Pomodoro, mozzarella, prosciutto cotto e funghi", prezzoNormale:8.5, prezzoFamiglia:13.5, allergeni:"Glutine, Lattosio"}
+    ],
+    verdure:[
+        {nome:"Vegetariana", descrizione:"Verdure fresche di stagione e mozzarella", prezzoNormale:7.5, prezzoFamiglia:12.5, allergeni:"Glutine, Lattosio"}
+    ],
+    piccanti:[
+        {nome:"Pepperoni Piccante", descrizione:"Pomodoro, mozzarella e salame piccante", prezzoNormale:8.5, prezzoFamiglia:13.5, allergeni:"Glutine, Lattosio"}
+    ],
+    pesce:[
+        {nome:"Tonno e Cipolla", descrizione:"Pomodoro, mozzarella, tonno e cipolla rossa", prezzoNormale:8.5, prezzoFamiglia:13.5, allergeni:"Glutine, Lattosio"}
+    ],
+    golose:[
+        {nome:"Calzone", descrizione:"Ripieno di mozzarella, prosciutto e funghi", prezzoNormale:9, prezzoFamiglia:14, allergeni:"Glutine, Lattosio"}
+    ],
+    taglieri:[
+        {nome:"Tagliere Misto", descrizione:"Salumi e formaggi selezionati con pane artigianale", prezzoNormale:12, allergeni:"Glutine, Lattosio"}
+    ],
+    fritti:[
+        {nome:"Mozzarella in Carrozza", descrizione:"Fette di mozzarella impanate e fritte", prezzoNormale:6, allergeni:"Glutine, Lattosio"}
+    ],
+    bere:[
+        {nome:"Bibite", descrizione:"Acqua, bibite gassate, succhi di frutta", prezzoNormale:2, allergeni:"Nessuno"}
+    ],
+    dessert:[
+        {nome:"Tiramisù", descrizione:"Dolce al cucchiaio con mascarpone e caffè", prezzoNormale:5, allergeni:"Uova, Lattosio, Glutine"}
+    ]
+};
+
+function creaMenu(sezione, listaId){
+    const container=document.getElementById(listaId);
+    const categoria=menu[sezione];
+    const monoprezzo = ["dessert","bere","fritti","taglieri"];
+    categoria.forEach(item=>{
+        const div=document.createElement("div");
+        div.className="menu-item";
+        if(monoprezzo.includes(sezione)){
+            div.innerHTML=`
+                <img src="https://via.placeholder.com/400x140.png?text=${encodeURIComponent(item.nome)}" alt="${item.nome}">
+                <h3>${item.nome}</h3>
+                <p>${item.descrizione}</p>
+                <div class="formati"><div>${item.prezzoNormale.toFixed(2)} €</div></div>
+                <div class="lattosio-note">Se vuoi mozzarella senza lattosio aggiungi: +1 €</div>
+                <div class="allergeni">Allergeni: ${item.allergeni}</div>
+            `;
+        } else {
+            div.innerHTML=`
+                <img src="https://via.placeholder.com/400x140.png?text=${encodeURIComponent(item.nome)}" alt="${item.nome}">
+                <h3>${item.nome}</h3>
+                <p>${item.descrizione}</p>
+                <div class="formati">
+                    <div data-prezzo="${(item.prezzoNormale*0.7).toFixed(2)}" class="formato selected">Mini - ${(item.prezzoNormale*0.7).toFixed(2)} €</div>
+                    <div data-prezzo="${item.prezzoNormale}" class="formato">Normale - ${item.prezzoNormale} €</div>
+                    <div data-prezzo="${(item.prezzoNormale+3.5).toFixed(2)}" class="formato">Scrocchiarella - ${(item.prezzoNormale+3.5).toFixed(2)} €</div>
+                    <div data-prezzo="${item.prezzoFamiglia}" class="formato">Famiglia - ${item.prezzoFamiglia} €</div>
+                </div>
+                <div class="lattosio-note">Se vuoi mozzarella senza lattosio: Mini/Normale/Scrocchiarella +1€, Famiglia +3€</div>
+                <div class="allergeni">Allergeni: ${item.allergeni}</div>
+            `;
+        }
+        container.appendChild(div);
+    });
+}
+
+Object.keys(menu).forEach(sezione=>creaMenu(sezione, `${sezione}-list`));
+
+document.querySelectorAll('.menu-item').forEach(itemDiv=>{
+    const formati = itemDiv.querySelectorAll('.formato');
+    formati.forEach(f=>{
+        f.addEventListener('click', ()=>{
+            formati.forEach(ff=>ff.classList.remove('selected'));
+            f.classList.add('selected');
+        });
+    });
+});
+</script>
+
+</body>
+</html>
